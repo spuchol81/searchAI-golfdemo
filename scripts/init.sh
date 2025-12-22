@@ -145,3 +145,13 @@ curl -H "Authorization: ApiKey $ELASTICSEARCH_APIKEY" -H "Content-Type: applicat
 
 # Ingest review dataset
 curl -H "Authorization: ApiKey $ELASTICSEARCH_APIKEY" -H "Content-Type: application/x-ndjson" --data-binary "@searchAI-golfdemo/data/Airline_reviews.ndjson" -XPOST "http://elasticsearch-es-http.default.svc:9200/airline_reviews/_bulk"
+
+# Create data view
+curl -u "elastic:changeme" -H "Content-Type: application/json" -H "kbn-xsrf: true" -H "x-elastic-internal-origin: Kibana" -XPOST "http://kubernetes-vm:30001/api/data_views/data_view" -d \
+'{
+  "data_view": {
+    "id": "airline_reviews",
+    "name": "airline_reviews",
+    "title": "airline_reviews"
+  }
+}'
