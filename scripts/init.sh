@@ -112,9 +112,9 @@ curl -H "Authorization: ApiKey $ELASTICSEARCH_APIKEY" -H "Content-Type: applicat
         },
         "Review_semantic": {
           "type": "semantic_text",
-          "inference_id": ".elser-2-elastic",
+          "inference_id": ".elser-2-elasticsearch",
           "model_settings": {
-            "service": "elastic",
+            "service": "elasticsearch",
             "task_type": "sparse_embedding"
           }
         },
