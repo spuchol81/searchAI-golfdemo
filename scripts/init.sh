@@ -1,5 +1,5 @@
 # Activate Agent builder
-curl -u "elastic:changeme" -H "Content-Type: application/json" -H "kbn-xsrf: true" -H "x-elastic-internal-origin: Kibana" -XPOST "http://kubernetes-vm:30001/internal/kibana/settings" -d 
+curl -u "elastic:changeme" -H "Content-Type: application/json" -H "kbn-xsrf: true" -H "x-elastic-internal-origin: Kibana" -XPOST "http://kubernetes-vm:30001/internal/kibana/settings" -d \
 '{
    "changes": {
       "agentBuilder:enabled": true
@@ -10,7 +10,7 @@ curl -u "elastic:changeme" -H "Content-Type: application/json" -H "kbn-xsrf: tru
 curl -u "elastic:changeme" -H "Content-Type: application/json" -H "kbn-xsrf: true" -H "x-elastic-internal-origin: Kibana" -XPOST "http://kubernetes-vm:30001/api/sample_data/flights"
 
 # Patch dataset with real companies
-curl -u "elastic:changeme" -H "Content-Type: application/json" -XPOST "http://elasticsearch-es-http.default.svc:9200/kibana_sample_data_flights/_update_by_query" -d
+curl -u "elastic:changeme" -H "Content-Type: application/json" -XPOST "http://elasticsearch-es-http.default.svc:9200/kibana_sample_data_flights/_update_by_query" -d \
 '{
   "script": {
     "source": "ctx._source.Carrier = params.new_value",
@@ -26,7 +26,7 @@ curl -u "elastic:changeme" -H "Content-Type: application/json" -XPOST "http://el
   }
 }'
 
-curl -u "elastic:changeme" -H "Content-Type: application/json" -XPOST "http://elasticsearch-es-http.default.svc:9200/kibana_sample_data_flights/_update_by_query" -d
+curl -u "elastic:changeme" -H "Content-Type: application/json" -XPOST "http://elasticsearch-es-http.default.svc:9200/kibana_sample_data_flights/_update_by_query" -d \
 '{
   "script": {
     "source": "ctx._source.Carrier = params.new_value",
@@ -42,7 +42,7 @@ curl -u "elastic:changeme" -H "Content-Type: application/json" -XPOST "http://el
   }
 }'
 
-curl -u "elastic:changeme" -H "Content-Type: application/json" -XPOST "http://elasticsearch-es-http.default.svc:9200/kibana_sample_data_flights/_update_by_query" -d
+curl -u "elastic:changeme" -H "Content-Type: application/json" -XPOST "http://elasticsearch-es-http.default.svc:9200/kibana_sample_data_flights/_update_by_query" -d \
 '{
   "script": {
     "source": "ctx._source.Carrier = params.new_value",
@@ -59,7 +59,7 @@ curl -u "elastic:changeme" -H "Content-Type: application/json" -XPOST "http://el
 }'
 
 #Prepare index to ingest customer review dataset from Kaggle
-curl -u "elastic:changeme" -H "Content-Type: application/json" -XPUT "http://elasticsearch-es-http.default.svc:9200/airline_reviews" -d
+curl -u "elastic:changeme" -H "Content-Type: application/json" -XPUT "http://elasticsearch-es-http.default.svc:9200/airline_reviews" -d \
 '{
     "mappings": {
               "properties": {
@@ -136,4 +136,4 @@ curl -u "elastic:changeme" -H "Content-Type: application/json" -XPUT "http://ela
 }'
 
 # Ingest review dataset
-curl -X -u "elastic:changeme" -H "Content-Type: application/x-ndjson" -data-binary "@searchAI-golfdemo/data/Airline_reviews.ndjson" -XPOST "http://elasticsearch-es-http.default.svc:9200/airline_reviews/_bulk"
+curl -u "elastic:changeme" -H "Content-Type: application/x-ndjson" -data-binary "@searchAI-golfdemo/data/Airline_reviews.ndjson" -XPOST "http://elasticsearch-es-http.default.svc:9200/airline_reviews/_bulk"
