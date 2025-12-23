@@ -155,3 +155,8 @@ curl -u "elastic:changeme" -H "Content-Type: application/json" -H "kbn-xsrf: tru
     "title": "airline_reviews"
   }
 }'
+
+# Configure AI connector with gtp-4o
+/opt/workshops/elastic-llm.sh -k false
+
+# Add Airline agent with no tools
