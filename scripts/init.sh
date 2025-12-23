@@ -160,7 +160,7 @@ curl -u "elastic:changeme" -H "Content-Type: application/json" -H "kbn-xsrf: tru
 /opt/workshops/elastic-llm.sh -k false
 
 # Add Airline agent with no tools
-curl -u "elastic:changeme" -H "Content-Type: application/json" -H "kbn-xsrf: true" -H "x-elastic-internal-origin: Kibana" -XPOST "http://kubernetes-vm:30001/api/data_views/data_view" -d \
+curl -u "elastic:changeme" -H "Content-Type: application/json" -H "kbn-xsrf: true" -H "x-elastic-internal-origin: Kibana" -XPOST "http://kubernetes-vm:30001/api/agent_builder/agents" -d \
 '   {
       "id": "airline_advisor",
       "name": "airline_advisor",
