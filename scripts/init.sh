@@ -157,7 +157,7 @@ curl -u "elastic:changeme" -H "Content-Type: application/json" -H "kbn-xsrf: tru
 }'
 
 # Configure AI connector with gtp-4o
-/opt/workshops/elastic-llm.sh -m anthropic -k false
+/opt/workshops/elastic-llm.sh -k false
 
 # Add Airline agent with no tools
 curl -u "elastic:changeme" -H "Content-Type: application/json" -H "kbn-xsrf: true" -H "x-elastic-internal-origin: Kibana" -XPOST "http://kubernetes-vm:30001/api/agent_builder/agents" -d \
