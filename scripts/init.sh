@@ -13,11 +13,28 @@ curl -u "elastic:changeme" -H "Content-Type: application/json" -H "kbn-xsrf: tru
       "agentBuilder:enabled": true
    }
 }'
-
+sleep 5
 # Deploy kibana flights sample dataset 
 curl -u "elastic:changeme" -H "Content-Type: application/json" -H "kbn-xsrf: true" -H "x-elastic-internal-origin: Kibana" -XPOST "http://kubernetes-vm:30001/api/sample_data/flights"
-sleep 20
-# Patch dataset with real companies
+sleep 10
+# Patch dataset with real 
+curl -H "Authorization: ApiKey $ELASTICSEARCH_APIKEY" -H "Content-Type: application/json" -XPOST "http://elasticsearch-es-http.default.svc:9200/kibana_sample_data_flights/_update_by_query" -d \
+'{
+  "script": {
+    "source": "ctx._source.Carrier = params.new_value",
+    "lang": "painless",
+    "params": {
+      "new_value": "Emirates"
+    }
+  },
+  "query": {
+    "term": {
+      "Carrier": "Kibana Airlines"
+    }
+  }
+}'
+sleep 5
+
 curl -H "Authorization: ApiKey $ELASTICSEARCH_APIKEY" -H "Content-Type: application/json" -XPOST "http://elasticsearch-es-http.default.svc:9200/kibana_sample_data_flights/_update_by_query" -d \
 '{
   "script": {
@@ -33,7 +50,7 @@ curl -H "Authorization: ApiKey $ELASTICSEARCH_APIKEY" -H "Content-Type: applicat
     }
   }
 }'
-
+sleep 5
 curl -H "Authorization: ApiKey $ELASTICSEARCH_APIKEY" -H "Content-Type: application/json" -XPOST "http://elasticsearch-es-http.default.svc:9200/kibana_sample_data_flights/_update_by_query" -d \
 '{
   "script": {
@@ -49,7 +66,7 @@ curl -H "Authorization: ApiKey $ELASTICSEARCH_APIKEY" -H "Content-Type: applicat
     }
   }
 }'
-
+sleep 5
 curl -H "Authorization: ApiKey $ELASTICSEARCH_APIKEY" -H "Content-Type: application/json" -XPOST "http://elasticsearch-es-http.default.svc:9200/kibana_sample_data_flights/_update_by_query" -d \
 '{
   "script": {
@@ -65,7 +82,7 @@ curl -H "Authorization: ApiKey $ELASTICSEARCH_APIKEY" -H "Content-Type: applicat
     }
   }
 }'
-
+sleep 5
 #Prepare index to ingest customer review dataset from Kaggle
 curl -H "Authorization: ApiKey $ELASTICSEARCH_APIKEY" -H "Content-Type: application/json" -XPUT "http://elasticsearch-es-http.default.svc:9200/airline_reviews" -d \
 '{
@@ -142,10 +159,10 @@ curl -H "Authorization: ApiKey $ELASTICSEARCH_APIKEY" -H "Content-Type: applicat
       }
     }
 }'
-
+sleep 5
 # Ingest review dataset
 curl -H "Authorization: ApiKey $ELASTICSEARCH_APIKEY" -H "Content-Type: application/x-ndjson" --data-binary "@searchAI-golfdemo/data/Airline_reviews.ndjson" -XPOST "http://elasticsearch-es-http.default.svc:9200/airline_reviews/_bulk"
-
+sleep 5
 # Create data view
 curl -u "elastic:changeme" -H "Content-Type: application/json" -H "kbn-xsrf: true" -H "x-elastic-internal-origin: Kibana" -XPOST "http://kubernetes-vm:30001/api/data_views/data_view" -d \
 '{
@@ -155,7 +172,7 @@ curl -u "elastic:changeme" -H "Content-Type: application/json" -H "kbn-xsrf: tru
     "title": "airline_reviews"
   }
 }'
-
+sleep 5
 # Configure AI connector with gtp-4o
 /opt/workshops/elastic-llm.sh -k false
 
