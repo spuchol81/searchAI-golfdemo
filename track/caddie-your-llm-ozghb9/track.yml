@@ -1,0 +1,22 @@
+slug: caddie-your-llm-ozghb9
+id: xmd5x1njfunv
+title: '[Search AI] Caddie your Large Language Model'
+description: ""
+icon: ""
+tags:
+- wip
+owner: elastic
+developers:
+- sylvain.puchol@elastic.co
+idle_timeout: 1800
+timelimit: 7200
+sandbox_preset: managed-elastic-9-2-1
+lab_config:
+  sidebar_enabled: true
+  feedback_recap_enabled: true
+  feedback_tab_enabled: false
+  loadingMessages: true
+  override_challenge_layout: false
+  hideStopButton: false
+checksum: "1246410242433321497"
+enhanced_loading: false

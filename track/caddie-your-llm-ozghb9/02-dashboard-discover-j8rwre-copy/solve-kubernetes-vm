@@ -1,0 +1,32 @@
+#create the tool
+curl -u "elastic:changeme" -H "Content-Type: application/json" -H "kbn-xsrf: true" -H "x-elastic-internal-origin: Kibana" -XPOST "http://kubernetes-vm:30001/api/agent_builder/tools" -d \
+'{
+      "id": "airline_customer_reviews",
+      "type": "esql",
+      "description": "A semantic search query to retrieve any relevant information un customer reviews",
+      "tags": [],
+      "configuration": {
+        "query": "FROM airline_reviews METADATA _score | WHERE MATCH(Review  , ?question, { \"boost\": 0.25 }) OR  MATCH(Review_semantic, ?question, { \"boost\": 0.75 }) | SORT _score DESC | limit 50",
+        "params": {
+          "question": {
+            "type": "text",
+            "description": "the question from the user",
+            "optional": false
+          }
+        }
+      }
+}'
+
+#assign the tool to the agent
+curl -u "elastic:changeme" -H "Content-Type: application/json" -H "kbn-xsrf: true" -H "x-elastic-internal-origin: Kibana" -XPUT "http://kubernetes-vm:30001/api/agent_builder/agents/airline_advisor" -d \
+'{
+  "configuration": {
+    "tools": [
+      {
+        "tool_ids": [
+          "airline_customer_reviews"
+        ]
+      }
+    ]
+  }
+}'

@@ -1,0 +1,27 @@
+#create the tool
+curl -u "elastic:changeme" -H "Content-Type: application/json" -H "kbn-xsrf: true" -H "x-elastic-internal-origin: Kibana" -XPOST "http://kubernetes-vm:30001/api/agent_builder/tools" -d \
+'{
+      "id": "airline_delay_stats",
+      "type": "esql",
+      "description": "A query to agregate the total delay minutes that are due to Carrier by Carrier name",
+      "tags": [],
+      "configuration": {
+        "query": "FROM kibana_sample_data_flights | where FlightDelay : true  and FlightDelayType: \"Carrier Delay\" | STATS  cumulated_delay = SUM(FlightDelayMin) by Carrier | SORT cumulated_delay DESC | limit 10",
+        "params": {}
+      }
+}'
+
+#assign the tool to the agent
+curl -u "elastic:changeme" -H "Content-Type: application/json" -H "kbn-xsrf: true" -H "x-elastic-internal-origin: Kibana" -XPUT "http://kubernetes-vm:30001/api/agent_builder/agents/airline_advisor" -d \
+'{
+  "configuration": {
+    "tools": [
+      {
+        "tool_ids": [
+          "airline_customer_reviews",
+          "airline_delay_stats"
+        ]
+      }
+    ]
+  }
+}'

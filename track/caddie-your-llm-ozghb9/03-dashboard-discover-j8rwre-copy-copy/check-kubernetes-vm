@@ -1,0 +1,24 @@
+#!/bin/bash
+
+# Config
+AGENT_ID="airline_advisor"
+TOOL_ID="airline_delay_stats"
+AGENT_ENDPOINT="http://kubernetes-vm:30001/api/agent_builder/agents/$AGENT_ID"
+
+USERNAME="elastic"
+PASSWORD="changeme"
+
+# Query agent + check if tool added
+exists=$(curl -s -u "$USERNAME:$PASSWORD" \
+  -H "kbn-xsrf: true" \
+  -XGET "$AGENT_ENDPOINT" \
+  | jq '.configuration.tools[0].tool_ids | index("'$TOOL_ID'") != null')
+
+# Evaluate result
+if [ "$exists" = "true" ]; then
+  echo "Tool $TOOL_ID exists in agent $AGENT_ID. Returning 0."
+  exit 0
+else
+  echo "Tool $TOOL_ID does NOT exist in agent $AGENT_ID. Returning 1."
+  exit 1
+fi
