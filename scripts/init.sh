@@ -1,3 +1,6 @@
+#!/bin/bash 
+set -euxo pipefail
+
 ####################################################################### ENV
 
 ENV_FILE_PARENT_DIR=/home/kubernetes-vm
